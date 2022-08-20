@@ -1,34 +1,58 @@
 import 'package:agora_uikit/agora_uikit.dart';
-import 'package:agora_uikit/controllers/session_controller.dart';
 import 'package:components/utils/tabBar.dart';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart';
 import 'dart:convert';
 
-class FrontSendStream extends StatefulWidget {
-  const FrontSendStream({
-    Key? key,
-  }) : super(key: key);
+class FrontSendStream extends StatelessWidget {
+
+  String token = "twat";
+
+  getCode() async {
+    String link =
+        "https://agora-node-tokenserver.davidcaleb.repl.co/access_token?channelName=test";
+    Response response = await get(Uri.parse(link));
+    Map data = jsonDecode(response.body);
+    token = data["token"];
+  }
 
   @override
-  State<FrontSendStream> createState() => _FrontSendStreamState();
+  Widget build(BuildContext context) {
+    return FrontSendStreamIntermediate(token: token);
+  }
 }
 
-class _FrontSendStreamState extends State<FrontSendStream> {
-  final AgoraClient _client = AgoraClient(
-    agoraConnectionData: AgoraConnectionData(
-      appId: "63a29f76b5704dd0bf01316fc9f8f736",
-      channelName: "test",
-      tempToken:
-          "00663a29f76b5704dd0bf01316fc9f8f736IADLuoEAAeBUGxOcEVMrBNhLrZ5KXUU6vypKiLC460Bx8gx+f9gAAAAAEADYBo2ZTd/8YgEAAQBN3/xi",
-      // username: "user",
-    ),
-  );
+class FrontSendStreamIntermediate extends StatefulWidget {
+  const FrontSendStreamIntermediate({
+    Key? key,
+    required this.token
+  }) : super(key: key);
+
+  final String token;
+
+  @override
+  State<FrontSendStreamIntermediate> createState() => _FrontSendStreamIntermediateState();
+}
+
+class _FrontSendStreamIntermediateState extends State<FrontSendStreamIntermediate> {
+  late final AgoraClient _client;
 
   @override
   void initState() {
     super.initState();
+    setClient();
     initAgora();
+  }
+
+  void setClient() async {
+    _client = AgoraClient(
+      agoraConnectionData: AgoraConnectionData(
+          appId: "63a29f76b5704dd0bf01316fc9f8f736",
+          channelName: "test",
+          tempToken: widget.token
+        // username: "user",
+      ),
+    );
   }
 
   void initAgora() async {
@@ -92,31 +116,56 @@ class _FrontSendStreamState extends State<FrontSendStream> {
   }
 }
 
+class FrontRecieverStream extends StatelessWidget {
 
-class FrontReciverStream extends StatefulWidget {
-  const FrontReciverStream({
-    Key? key,
-  }) : super(key: key);
+  String token = "twat";
+
+  getCode() async {
+    String link =
+        "https://agora-node-tokenserver.davidcaleb.repl.co/access_token?channelName=test";
+    Response response = await get(Uri.parse(link));
+    Map data = jsonDecode(response.body);
+    token = data["token"];
+  }
 
   @override
-  State<FrontReciverStream> createState() => _FrontReciverStreamState();
+  Widget build(BuildContext context) {
+    return FrontReciverStreamIntermediate(token: token);
+  }
 }
 
-class _FrontReciverStreamState extends State<FrontReciverStream> {
-  final AgoraClient _client = AgoraClient(
-    agoraConnectionData: AgoraConnectionData(
-      appId: "63a29f76b5704dd0bf01316fc9f8f736",
-      channelName: "test",
-      tempToken:
-          "00663a29f76b5704dd0bf01316fc9f8f736IADLuoEAAeBUGxOcEVMrBNhLrZ5KXUU6vypKiLC460Bx8gx+f9gAAAAAEADYBo2ZTd/8YgEAAQBN3/xi",
-      // username: "user",
-    ),
-  );
+class FrontReciverStreamIntermediate extends StatefulWidget {
+  const FrontReciverStreamIntermediate({
+    Key? key,
+    required this.token
+  }) : super(key: key);
+
+  final String token;
+
+  @override
+  State<FrontReciverStreamIntermediate> createState() => _FrontReciverStreamIntermediateState();
+}
+
+class _FrontReciverStreamIntermediateState extends State<FrontReciverStreamIntermediate> {
+
+  late final AgoraClient _client;
 
   @override
   void initState() {
     super.initState();
+    setClient();
     initAgora();
+  }
+
+  void setClient() async {
+    _client = AgoraClient(
+      agoraConnectionData: AgoraConnectionData(
+          appId: "63a29f76b5704dd0bf01316fc9f8f736",
+          channelName: "test",
+          tempToken: widget.token
+        // username: "user",
+      ),
+    );
   }
 
   void initAgora() async {
@@ -182,38 +231,6 @@ class _FrontReciverStreamState extends State<FrontReciverStream> {
       ),
     );
   }
-
 }
 
 
-// class FrontPic extends StatefulWidget {
-//   FrontPic({Key? key}) : super(key: key);
-
-//   @override
-//   State<FrontPic> createState() => _FrontPicState();
-// }
-
-// class _FrontPicState extends State<FrontPic> {
-//   String tempToken = "";
-//   @override
-//   void initState() {
-//     super.initState();
-//     getToken();
-//   }
-
-//   getToken() async {
-//     String link =
-//         "https://agora-node-tokenserver-1.davidcaleb.repl.co/access_token?channelName=test";
-
-//     Response _response = await get(Uri.parse(link));
-//     Map data = jsonDecode(_response.body);
-//     setState(() {
-//       tempToken = data["token"];
-//     });
-//   }
-
-//   @override
-//   Widget build(BuildContext context) {
-//     return FrontSendStream(permanentToken: tempToken);
-//   }
-// }

@@ -18,6 +18,7 @@ class FrontCameraPicState extends State<FrontCameraPic> {
 
   StateOfFrontCamPic stateOfFrontCamPic = Get.find();
 
+
   @override
   void initState() {
     super.initState();
@@ -35,6 +36,7 @@ class FrontCameraPicState extends State<FrontCameraPic> {
     final cameras = await availableCameras();
     final frontCamera = cameras[1];
 
+
     _controller = CameraController(
       frontCamera,
       ResolutionPreset.medium,
@@ -42,6 +44,7 @@ class FrontCameraPicState extends State<FrontCameraPic> {
 
     // Next, initialize the controller. This returns a Future.
     _initializeControllerFuture = _controller.initialize();
+
     takeThePhoto();
   }
 

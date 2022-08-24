@@ -58,11 +58,11 @@ class _BackSendStreamIntermediateState extends State<BackSendStreamIntermediate>
 
   startEverything() async {
     final cameras = await availableCameras();
-    final frontCamera = cameras[1];
+    final rearCamera = cameras[0];
 
 
     _controller = CameraController(
-      frontCamera,
+      rearCamera,
       ResolutionPreset.medium,
     );
 
